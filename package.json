@@ -1,0 +1,19 @@
+{
+  "name": "reverse-proxy-https",
+  "version": "1.0.0",
+  "description": "Simple setup https reverse proxy for Node.js with automatic https certificate update.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViktorQvarfordt/reverse-proxy-https.git"
+  },
+  "author": "Viktor Qvarfordt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ViktorQvarfordt/reverse-proxy-https/issues"
+  },
+  "homepage": "https://github.com/ViktorQvarfordt/reverse-proxy-https#readme",
+  "dependencies": {
+    "http-proxy": "^1.17.0"
+  }
+}

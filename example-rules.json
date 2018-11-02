@@ -1,0 +1,4 @@
+{
+  "example.com": "http://localhost:8001",
+  "api.mydomain.com": "http://localhost:8002"
+}
