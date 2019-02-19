@@ -120,7 +120,12 @@ const certbotRequestPath = '/.well-known/acme-challenge'
 function initHttpRedirectServer () {
   http.createServer((req, res) => {
     if (req.url.startsWith(certbotRequestPath)) {
-      handleCertbotRequest(req, res)
+      handleCertbotRequest(req, res, () => {
+        setTimeout(() => {
+          console.log('Certbot did request. Stopping.')
+          process.exit()
+        }, 1000)
+      })
       return
     }
     res.writeHead(301, {
@@ -138,14 +143,18 @@ function initCertbotHttpServer () {
       throw new Error(`Unexpected request '${req.url}'.`)
     }
     handleCertbotRequest(req, res)
-  }).listen(80, () => console.log('http server to handle certbot http challenge is live.'))
+  }).listen(80, () => console.log('temporary http server to handle certbot http challenge is live.'))
 }
 
-function handleCertbotRequest (req, res) {
+function handleCertbotRequest (req, res, cb) {
+  console.log(`certbot is requesting ${req.url}`)
   const filePath = `${__dirname}/certbot-webroot${req.url}`
   fs.stat(filePath, (err, stat) => {
     if (err) {
-      throw err
+      console.log(`failed to read ${filePath}`)
+      res.statusCode = 500
+      res.end()
+      return
     }
     res.writeHead(200, {
       'Content-Type': 'text/plain',
@@ -154,10 +163,8 @@ function handleCertbotRequest (req, res) {
     const readStream = fs.createReadStream(filePath)
     readStream.pipe(res)
     readStream.on('end', () => {
-      setTimeout(() => {
-        console.log('Certbot did request. Stopping.')
-        process.exit()
-      }, 1000)
+      console.log(`delivered file to certbot `)
+      cb && cb()
     })
   })
 }
