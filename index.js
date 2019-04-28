@@ -67,10 +67,10 @@ function initProxy () { // This is the proxy; not the server.
 
   proxy.on('error', (err, req, res) => {
     console.error(err)
-    res.writeHead(500, {
+    res.writeHead && res.writeHead(500, {
       'Content-Type': 'text/plain'
     })
-    res.end('ERROR: Failed to proxy request.')
+    res.end && res.end('ERROR: Failed to proxy request.')
   })
 
   return proxy
