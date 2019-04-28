@@ -37,8 +37,9 @@ function parseCommandLineArguments () {
 function updateCerts (domains, email, updateCertsManually) {
   console.log(`Updating https certificates for ${domains.join(', ')}.`)
   const cmd = `certbot certonly \
+--force-renewal \
 --webroot \
--w ${__dirname}/certbot-webroot \
+-w "${__dirname}/certbot-webroot" \
 ${domains.map(domain => `-d ${domain}`).join(' ')} \
 --config-dir "${__dirname}/certbot-config-dir" \
 --work-dir "${__dirname}/certbot-work-dir" \
